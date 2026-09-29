@@ -1,0 +1,67 @@
+[
+{
+  "kind": "CreateTable",
+  "table": "student",
+  "columns": [{"name":"id","type":"INT"}, {"name":"name","type":"VARCHAR"}, {"name":"age","type":"INT"}]
+},
+{
+  "kind": "Insert",
+  "table": "student",
+  "columns": [],
+  "values": [{"kind":"Literal","type":"INT","value":1}, {"kind":"Literal","type":"VARCHAR","value":"Alice"}, {"kind":"Literal","type":"INT","value":20}]
+},
+{
+  "kind": "Insert",
+  "table": "student",
+  "columns": ["id", "name", "age"],
+  "values": [{"kind":"Literal","type":"INT","value":2}, {"kind":"Literal","type":"VARCHAR","value":"Bob"}, {"kind":"Literal","type":"INT","value":17}]
+},
+{
+  "kind": "Project",
+  "columns": ["name", "age"],
+  "child": {
+    "kind": "Filter",
+    "predicate": {"kind":"BinaryExpr","op":">","left":{"kind":"ColumnRef","name":"age"},"right":{"kind":"Literal","type":"INT","value":18}},
+    "child": {
+      "kind": "SeqScan",
+      "table": "student",
+      "purpose": "SELECT"
+    }
+  }
+},
+{
+  "kind": "Project",
+  "columns": ["name"],
+  "child": {
+    "kind": "Filter",
+    "predicate": {"kind":"BinaryExpr","op":">","left":{"kind":"ColumnRef","name":"age"},"right":{"kind":"Literal","type":"INT","value":18}},
+    "child": {
+      "kind": "SeqScan",
+      "table": "student",
+      "purpose": "SELECT"
+    }
+  }
+},
+{
+  "kind": "Project",
+  "columns": ["id", "name", "age"],
+  "child": {
+    "kind": "Filter",
+    "predicate": {"kind":"BinaryExpr","op":"=","left":{"kind":"ColumnRef","name":"name"},"right":{"kind":"Literal","type":"VARCHAR","value":"Alice"}},
+    "child": {
+      "kind": "SeqScan",
+      "table": "student",
+      "purpose": "SELECT"
+    }
+  }
+},
+{
+  "kind": "Filter",
+  "predicate": {"kind":"BinaryExpr","op":"<","left":{"kind":"ColumnRef","name":"age"},"right":{"kind":"Literal","type":"INT","value":18}},
+  "child": {
+    "kind": "SeqScan",
+    "table": "student",
+    "purpose": "DELETE"
+  }
+}
+]
